@@ -194,7 +194,15 @@ elif st.session_state.stage == "result":
     ax.set_facecolor("none")
 
     ax.bar(labels, values, color="#b28bff", edgecolor="none", width=0.55)
-    ax.tick_params(colors="white", labelsize=9)
+
+    # Theme-aware text color
+    base_theme = st.get_option("theme.base") or "dark"
+    text_color = "#000000" if base_theme == "light" else "#FFFFFF"
+
+    ax.tick_params(colors=text_color, labelsize=9)
+    ax.yaxis.label.set_color(text_color)
+    ax.xaxis.label.set_color(text_color)
+
     for spine in ax.spines.values():
         spine.set_visible(False)
 
@@ -212,7 +220,6 @@ elif st.session_state.stage == "result":
         st.session_state.answers = {}
         st.rerun()
 
-    # Force scroll to very top when result page is shown
     st.markdown(
         """
         <script>
